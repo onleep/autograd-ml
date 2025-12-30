@@ -1,0 +1,9 @@
+dataset_path: artifacts/raw/dataset.csv
+target_col: price
+drop_cols:
+  - id
+  - price
+  - autoru_id
+  - autoru_hash
+  - created_at
+  - updated_at

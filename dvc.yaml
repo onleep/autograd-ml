@@ -1,0 +1,20 @@
+stages:
+  download:
+    cmd: python src/autograd_tabular/download.py
+    deps:
+      - src/autograd_tabular/download.py
+    outs:
+      - artifacts/raw/dataset.csv
+  train:
+    cmd: python src/autograd_tabular/train.py
+    deps:
+      - src/autograd_tabular/train.py
+    # outs:
+    #   - models/catboost_price.cbm
+    # хранится и версионируется через mlflow + s3
+  infer:
+    cmd: python src/autograd_tabular/infer.py
+    deps:
+      - src/autograd_tabular/infer.py
+    outs:
+      - artifacts/predictions.csv

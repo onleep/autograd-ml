@@ -1,0 +1,10 @@
+seed: 42
+save_model: true
+
+output_dir: artifacts/models
+model_name: catboost_price.cbm
+
+metrics:
+  - R2
+  - MAE
+  - RMSE

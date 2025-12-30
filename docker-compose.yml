@@ -1,0 +1,33 @@
+services:
+  minio:
+    image: minio/minio:RELEASE.2025-09-07T16-13-09Z
+    restart: unless-stopped
+    ports:
+      - 9001:9001
+      - 9000:9000
+    command: server /data --console-address ':9001'
+    volumes:
+      - minio:/data
+  mlflow:
+    image: ghcr.io/mlflow/mlflow:v3.8.1
+    restart: unless-stopped
+    depends_on:
+      - minio
+    ports:
+      - 5000:5000
+    command:
+      - bash
+      - -c
+      - |
+        pip install boto3 --quiet
+        mlflow server --host 0.0.0.0 \
+            --default-artifact-root s3://models/mlflow --serve-artifacts
+    volumes:
+      - mlflow:/mlflow
+    environment:
+      AWS_ACCESS_KEY_ID: minioadmin
+      AWS_SECRET_ACCESS_KEY: minioadmin
+      MLFLOW_S3_ENDPOINT_URL: http://minio:9000
+volumes:
+  minio: null
+  mlflow: null

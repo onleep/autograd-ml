@@ -1,0 +1,10 @@
+.DS_Store
+.ruff_cache
+
+*.log
+*.pyc
+
+mlruns
+mlflow.db
+node_modules
+catboost_info
