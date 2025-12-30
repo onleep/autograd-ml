@@ -4,7 +4,7 @@
 
 Помимо числовых и категориальных признаков используются текстовые признаки описания объявления. Для обработки описаний применяется модель cointegrated/rubert-tiny2 (`pytorch` + SentenceTransformer), с помощью которой генерируются эмбеддинги текста. Полученные векторные признаки добавляются в табличные данные и подаются на вход модели `CatBoost`.
 
-Данные из продовой `MySQL` выгружаются заранее (чтобы при проверке не требовались .env и доступы к БД) и публикуются в Google Drive. Далее данные управляются через `DVC`, а модель и эксперименты — `MLflow`.
+Данные из продовой `MySQL` выгружаются заранее (чтобы при проверке не требовались .env и доступы к БД) и публикуются в Google Drive. Далее они управляются через `DVC`, модель и эксперименты через `MLflow`.
 
 ## Стек
 
@@ -49,11 +49,11 @@ docker compose up -d
 - **MinIO** — S3 хранилище (для DVC remote и MLflow artifacts)
 - **MLflow** — tracking server (логирование)
 
-> В проекте MLflow использует S3 как `default-artifact-root`, поэтому модель сохраняется в S3 (MinIO).
+> В проекте MLflow использует S3 как `default-artifact-root`, модель сохраняется в S3 (MinIO).
 
 ### 4) Подготовка Minio для работы
 
-- Перейти по адресу: http://localhost:5000
+- Перейти по адресу: http://localhost:9001
 - Ввести логин и пароль: minioadmin
 - Создать в Minio бакет models
 
@@ -100,11 +100,21 @@ dvc push dvc.yaml:download
 dvc repro dvc.yaml
 ```
 
-### Вариант B: запуск обучения напрямую
+### Вариант B: Запуск напрямую
+
+1. train
 
 ```bash
 uv run python src/autograd_tabular/train.py
 ```
+
+2. infer
+
+```bash
+uv run python src/autograd_tabular/infer.py
+```
+
+> Предсказания будут сохранены в artifacts/predictions.csv
 
 Внутри `train.py` и `infer.py` встроена проверка наличия данных через DVC (pull) и логирование в MLflow.
 
