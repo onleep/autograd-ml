@@ -12,22 +12,3 @@ stages:
       hash: md5
       md5: a5b3a169c7fc249e242c3efd28dfa684
       size: 1803026
-  train:
-    cmd: python src/autograd_tabular/train.py
-    deps:
-    - path: src/autograd_tabular/train.py
-      hash: md5
-      md5: 018c3375d9510f7523fd50ff72669682
-      size: 3020
-  infer:
-    cmd: python src/autograd_tabular/infer.py
-    deps:
-    - path: src/autograd_tabular/infer.py
-      hash: md5
-      md5: d5acd6c293c83cb6b0a1109f0277a02e
-      size: 1668
-    outs:
-    - path: artifacts/predictions.csv
-      hash: md5
-      md5: ca3cd473f79716ae78687878a0c2634e
-      size: 1821390
